@@ -1,0 +1,145 @@
+from tkinter import *
+import tkinter.font
+import RPi.GPIO as GPIO
+
+import time
+
+
+
+# Set the GPIO mode and pins
+
+GPIO.setmode(GPIO.BCM)
+
+red_pin = 14
+
+blue_pin = 15
+
+green_pin = 18
+
+
+
+# Initialize GUI window
+
+win = Tk()
+
+win.title("LED Control")
+
+win.geometry("250x180")
+
+myFont = tkinter.font.Font(family='Helvetica', size=16, weight="bold")
+
+uv = StringVar()
+
+
+
+# Initialize LED states
+
+GPIO.setup(red_pin, GPIO.OUT)
+
+GPIO.setup(blue_pin, GPIO.OUT)
+
+GPIO.setup(green_pin, GPIO.OUT)
+
+
+
+# Function to turn on the red LED
+
+def ledRed():
+
+    GPIO.output(red_pin, GPIO.HIGH)
+
+    GPIO.output(blue_pin, GPIO.LOW)
+
+    GPIO.output(green_pin, GPIO.LOW)
+
+
+
+# Function to turn on the blue LED
+
+def ledBlue():
+
+    GPIO.output(red_pin, GPIO.LOW)
+
+    GPIO.output(blue_pin, GPIO.HIGH)
+
+    GPIO.output(green_pin, GPIO.LOW)
+
+
+
+# Function to turn on the green LED
+
+def ledGreen():
+
+    GPIO.output(red_pin, GPIO.LOW)
+
+    GPIO.output(blue_pin, GPIO.LOW)
+
+    GPIO.output(green_pin, GPIO.HIGH)
+
+
+
+# Function to turn on all LEDs
+
+def allOn():
+
+    GPIO.output(red_pin, GPIO.HIGH)
+
+    GPIO.output(blue_pin, GPIO.HIGH)
+
+    GPIO.output(green_pin, GPIO.HIGH)
+
+
+
+# Function to turn off all LEDs
+
+def allOFF():
+
+    GPIO.output(red_pin, GPIO.LOW)
+
+    GPIO.output(blue_pin, GPIO.LOW)
+
+    GPIO.output(green_pin, GPIO.LOW)
+
+
+
+# Function to clean up GPIO and exit
+
+def close():
+
+    GPIO.cleanup()
+
+    win.destroy()
+
+
+
+# GUI Widgets
+
+Label(win, text="Choose an option!!", font=myFont, padx=14).pack()
+
+Radiobutton(win, text="Red", font=myFont, command=ledRed, bg='red', height=1, width=27, bd=3, variable=uv,
+
+            value="LED: Red").pack(anchor="w")
+
+Radiobutton(win, text="Blue", font=myFont, command=ledBlue, bg='blue', height=1, width=27, bd=3, variable=uv,
+
+            value="LED: Blue").pack(anchor="w")
+
+Radiobutton(win, text="Green", font=myFont, command=ledGreen, bg='green', height=1, width=27, bd=3, variable=uv,
+
+            value="LED: Green").pack(anchor="w")
+
+Radiobutton(win, text="All", font=myFont, command=allOn, bg='yellow', height=1, width=27, bd=3, variable=uv,
+
+            value="LED: All").pack(anchor="w")
+
+Radiobutton(win, text="None", font=myFont, command=allOFF, bg='purple', height=1, width=27, bd=3, variable=uv,
+
+            value="LED: None").pack(anchor="w")
+
+Button(win, text="Exit", font=myFont, command=close, bg='grey').pack(anchor="w")
+
+
+
+win.protocol("WM_DELETE_WINDOW", close)
+
+win.mainloop()
